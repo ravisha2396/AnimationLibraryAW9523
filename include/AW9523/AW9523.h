@@ -14,6 +14,8 @@ int aw9523_register_read(uint8_t reg_addr, uint8_t *data, size_t len);
 
 int aw9523_register_write_byte(uint8_t reg_addr, uint8_t data);
 
+int aw9523_driver_delete(void);
+
 
 
 

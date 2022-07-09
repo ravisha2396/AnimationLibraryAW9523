@@ -1,8 +1,8 @@
-
 #include <stdio.h>
 #include "esp_log.h"
 #include "driver/i2c.h"
 #include "AW9523.h"
+ 
 
 int aw9523_register_read(uint8_t reg_addr, uint8_t *data, size_t len)
 {
@@ -33,7 +33,12 @@ int aw9523_init(void)
     };
 
     i2c_param_config(i2c_master_port, &conf);
+    int ret = i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 
-    return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
+    return ret;
+}
+
+int aw9523_driver_delete(void){
+    return i2c_driver_delete(I2C_MASTER_NUM);
 }
 
