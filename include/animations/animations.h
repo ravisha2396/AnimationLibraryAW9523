@@ -10,11 +10,12 @@ typedef struct {
     uint8_t led_num;    
     uint8_t br_val;
     uint8_t color; 
+    uint8_t max_leds;
     bool animation_flag;
 } animation_led_t;
 
 typedef struct {
-    bool led_status[4];
+    bool led_status[5];
     bool set;
     bool iter_done;
     uint8_t br;
@@ -32,6 +33,7 @@ typedef struct {
     bool iter_done;
     uint8_t br;        
 } animation_tres_t;
+
 
 
 int32_t prepare_animation(animation_led_t* a_ptr);

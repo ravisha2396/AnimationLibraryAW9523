@@ -32,6 +32,7 @@ if(animation->animation_flag){
     }
 }
 
+// init function
 int32_t prepare_animation(animation_led_t* a_ptr){
 
     ESP_LOGI(TAG, "Preparing animation configuration\n");
@@ -39,8 +40,9 @@ int32_t prepare_animation(animation_led_t* a_ptr){
     esp_timer_stop(periodic_timer);
 
     assert(a_ptr!=NULL);
-    memcpy(&animation, a_ptr, sizeof(animation_led_t));
     animation = a_ptr;
+    //memcpy(animation, a_ptr, sizeof(animation_led_t));
+
 
     // reinitialize structures
     uno.br=0;
@@ -115,12 +117,13 @@ void animation_handler(){
                     uno.br=0;
                     uno.led_status[uno.ctr] = true;
                     uno.ctr++;
-                    if(uno.ctr<4){
+                    if(uno.ctr<animation->max_leds){
                         uno.set=true;
                     }
                     else{
                     uno.ctr=0;
                     uno.iter_done = false;
+                    animation->animation_flag = false;
                     // stop timer
                     esp_timer_stop(periodic_timer);
                     }
@@ -167,7 +170,7 @@ void animation_handler(){
 void animation_uno(void){
 
     if(!uno.iter_done){    
-            // Check if red led is not already at brightness level
+            // Check if the led is not already at brightness level
                 if(!uno.led_status[0]){
                     ledbase_set_brightness(findPin(0), uno.br);
                     uno.br++;
@@ -188,6 +191,13 @@ void animation_uno(void){
                 }
                 else if(uno.led_status[0] && uno.led_status[1] && uno.led_status[2] && !uno.led_status[3]){
                     ledbase_set_brightness(findPin(3), uno.br);
+                    uno.br++;
+                    uno.iter_done=true;
+                    uno.set = false;
+                }
+                else if(uno.led_status[0] && uno.led_status[1] && uno.led_status[2] && uno.led_status[3] && !uno.led_status[4]){
+                    ESP_LOGI(TAG, "Entered a door that I should not have\n");
+                    ledbase_set_brightness(findPin(4), uno.br);
                     uno.br++;
                     uno.iter_done=true;
                     uno.set = false;
