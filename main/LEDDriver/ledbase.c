@@ -4,7 +4,7 @@
 
 //#include <esp_log.h>
 
-//static const char* const TAG = "LED_BASE";
+//static const char* const TAG = "LEDBASE";
 
 int32_t ledbase_init(void){
 
@@ -50,7 +50,7 @@ int32_t ledbase_set_brightness( uint8_t pin, uint8_t val){
 
     switch(pin){
             case 8:
-                reg_addr +=0;
+                reg_addr+=0;
                 break;
             case 9:
                 reg_addr+=1;
@@ -84,8 +84,10 @@ int32_t ledbase_set_brightness( uint8_t pin, uint8_t val){
     if(reg_addr < 0x20 || reg_addr > 0x2F)
         return -1;  
     if(aw9523_register_write_byte(reg_addr, val)){
+        //ESP_LOGI(TAG, "Write failed\n");
         return -1;
     }
+    //ESP_LOGI(TAG, "Write ok\n");
 
     return 0;
 
