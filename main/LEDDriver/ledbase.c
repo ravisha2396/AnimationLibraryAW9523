@@ -2,10 +2,6 @@
 #include "AW9523.h"
 #include "ledbase.h"
 
-//#include <esp_log.h>
-
-//static const char* const TAG = "LEDBASE";
-
 int32_t ledbase_init(void){
 
     /** Initialize the AW9523 on the I2C bus
@@ -84,10 +80,8 @@ int32_t ledbase_set_brightness( uint8_t pin, uint8_t val){
     if(reg_addr < 0x20 || reg_addr > 0x2F)
         return -1;  
     if(aw9523_register_write_byte(reg_addr, val)){
-        //ESP_LOGI(TAG, "Write failed\n");
         return -1;
     }
-    //ESP_LOGI(TAG, "Write ok\n");
 
     return 0;
 

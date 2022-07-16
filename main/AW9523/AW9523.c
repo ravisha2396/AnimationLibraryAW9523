@@ -2,7 +2,8 @@
 #include "esp_log.h"
 #include "driver/i2c.h"
 #include "AW9523.h"
- 
+
+#ifdef I2C_TARGET_DEVICE 
 
 int aw9523_register_read(uint8_t reg_addr, uint8_t *data, size_t len)
 {
@@ -41,4 +42,6 @@ int aw9523_init(void)
 int aw9523_driver_delete(void){
     return i2c_driver_delete(I2C_MASTER_NUM);
 }
+
+#endif
 

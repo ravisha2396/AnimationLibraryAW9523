@@ -41,8 +41,6 @@ int32_t prepare_animation(animation_led_t* a_ptr){
 
     assert(a_ptr!=NULL);
     animation = a_ptr;
-    //memcpy(animation, a_ptr, sizeof(animation_led_t));
-
 
     // reinitialize structures
     uno.br=0;
@@ -59,24 +57,21 @@ int32_t prepare_animation(animation_led_t* a_ptr){
     tres.set=false;
     tres.iter_done = true;
 
-    // error checks
-
-    if(animation->step_time<1u || animation->step_time >5u)
-        return -1;
+    // assertions on input values
+    
+    assert(animation->step_time>=1u && animation->step_time<6u);
 
     timePeriod = animation->step_time*MIN_TIME;
 
-    if(animation->type<1 || animation->type >3){
-        return -1;
-    }
+    assert(animation->type>=1u && animation->type<4u);
 
-    if(animation->led_num<0 || animation->led_num>5){
-        return -1;
-    }
+    assert(animation->led_num>=0 && animation->led_num<5u);
 
-    if(animation->color<1 || animation->color>3){
-        return -1;
-    }
+    assert(animation->br_val>=0 && animation->br_val<256u);
+
+    assert(animation->color>=1u && animation->color<4u);
+
+    assert(animation->max_leds>=1u && animation->max_leds<6u);
 
     // init/configure leds
     ledbase_init();
@@ -103,7 +98,6 @@ int32_t prepare_animation(animation_led_t* a_ptr){
 
 
 // The handler called from main once animation interrupt occurs
-    //int counter = 0;
 void animation_handler(){
 
     switch(animation->type){
@@ -133,8 +127,6 @@ void animation_handler(){
             break;
         case 2 :   
             if(duo.set){ 
-                //counter++;
-                //ESP_LOGI(TAG, "Counter value: %d\n", counter);    
                 if(duo.br<animation->br_val){
                     duo.iter_done = false;
                 }
@@ -196,7 +188,6 @@ void animation_uno(void){
                     uno.set = false;
                 }
                 else if(uno.led_status[0] && uno.led_status[1] && uno.led_status[2] && uno.led_status[3] && !uno.led_status[4]){
-                    ESP_LOGI(TAG, "Entered a door that I should not have\n");
                     ledbase_set_brightness(findPin(4), uno.br);
                     uno.br++;
                     uno.iter_done=true;
@@ -214,8 +205,6 @@ void animation_duo(){
             duo.set = false;
             ledbase_set_brightness(findPin(animation->led_num), duo.br);
             duo.br++;
-            
-            //ESP_LOGI(TAG, "Brightness : %d", duo.br);
     }
 
 }
@@ -225,7 +214,6 @@ void animation_tres(){
     if(!tres.iter_done){
         tres.set = false;
         tres.iter_done = true;
-        //ESP_LOGI(TAG, "Brightness : %d", tres.br);
         ledbase_set_brightness(findPin(animation->led_num), tres.br);
         tres.br--;
         if(tres.br==0)
@@ -238,57 +226,57 @@ uint8_t findPin(uint8_t num){
     uint8_t pin = 0;
     if(num==0){
         if(animation->color == 1){
-            pin = 0;
+            pin = LED0;
         }
         else if(animation->color == 2){
-            pin = 1;
+            pin = LED1;
         }
         else if(animation->color == 3){
-            pin = 2;
+            pin = LED2;
         }
     }
     else if(num==1){
         if(animation->color == 1){
-            pin = 3;
+            pin = LED3;
         }
         else if(animation->color == 2){
-            pin = 4;
+            pin = LED4;
         }
         else if(animation->color == 3){
-            pin = 5;
+            pin =LED5;
         }
     }
     else if(num==2){
         if(animation->color == 1){
-            pin = 6;
+            pin = LED6;
         }
         else if(animation->color == 2){
-            pin = 7;
+            pin = LED7;
         }
         else if(animation->color == 3){
-            pin = 12;
+            pin = LED12;
         }
     }
     else if(num==3){
         if(animation->color == 1){
-            pin = 13;
+            pin = LED13;
         }
         else if(animation->color == 2){
-            pin = 14;
+            pin = LED14;
         }
         else if(animation->color == 3){
-            pin = 15;
+            pin = LED15;
         }
     }
     else{
         if(animation->color == 1){
-            pin = 8;
+            pin = LED8;
         }
         else if(animation->color == 2){
-            pin = 9;
+            pin = LED9;
         }
         else if(animation->color == 3){
-            pin = 10;
+            pin = LED10;
         }
     }
 
