@@ -20,7 +20,7 @@ The number of animations right now is limited but this library can be largely ex
 ## How to use example
 
 - Clone the library.
-- Inside the main.c file simply create structures for the animation frames that are defined in animation.hardware
+- Inside the main.c file simply create structures for the animation frames that are defined in animation.h file.
 - Use the animation handler function your main while(true) loop while checking for the global animations structs animation flag. 
 - The implementation is highly non blocking and interrupt driven so you can perform other important things in the main while this happens in the background. 
 - A priority can be given to the interrupt if you do not have other critical tasks running in the main while(true) loop.
