@@ -61,7 +61,7 @@ void app_main(void)
                 .type = 1,
                 .led_num = 0,
                 .color = 3,
-                .max_leds = 5,
+                .max_leds = 4,
                 .animation_flag = true,
         };
 
